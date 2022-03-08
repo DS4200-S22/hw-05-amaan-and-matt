@@ -26,16 +26,12 @@ const svg2 = d3.select("#vis-holder")
 let brush2; 
 let myCircles2; 
 
-
 //TODO: append svg object to the body of the page to house bar chart 
 const svg3 = d3.select("#vis-holder")
                 .append("svg")
                 .attr("width", width - margin.left - margin.right)
                 .attr("height", height - margin.top - margin.bottom)
                 .attr("viewBox", [0, 0, width, height]); 
-
-
-
 //TODO: Initialize bars. We will need these to be global. 
 let myBars; 
 
@@ -101,7 +97,7 @@ d3.csv("data/iris.csv").then((data) => {
                       .text(yKey1)
       );
 
-    // Add points
+    // Add points for the first scatterplot
     const myCircles1 = svg1.selectAll("circle")
                             .data(data)
                             .enter()
@@ -116,6 +112,8 @@ d3.csv("data/iris.csv").then((data) => {
     //TODO: Define a brush (call it brush1)
     brush1 = d3.brush().extent([[0,0], [width, height]])
 
+      
+      
     //TODO: Add brush1 to svg1
     svg1.call(brush1
       .on("start", clear)
@@ -283,6 +281,7 @@ d3.csv("data/iris.csv").then((data) => {
       svg1.call(brush1.move, null);
       
       //TODO: add code to clear existing brush from svg2
+      svg2.call(brush2.move, null)
   }
 
   // Call when Scatterplot1 is brushed 
@@ -293,32 +292,64 @@ d3.csv("data/iris.csv").then((data) => {
       //TODO: Give bold outline to all points within the brush region in Scatterplot1
 
       //TODO: Give bold outline to all points in Scatterplot2 corresponding to points within the brush region in Scatterplot1
+      
+    //TODO: Find coorindates of brushed region
+    let coordinates = d3.brushSelection(this);
+
+    // this gives all first scatterplots circles brushed class attributes 
+    // gives black outline, opacity
+    myCircles1.classed("brushed", function (d) {
+      return brushed(coordinates, x1(d[xKey1]), y1(d[yKey1]))
+      
+    })
+
+    // outlines second scatterplot circles that are on same row as first scatterplot circles being brushed
+    myCircles2.classed("brushed", function (d) {
+      return brushed(coordinates, x1(d[xKey1]), y1(d[yKey1]))
+    })
     
   }
 
   // Call when Scatterplot2 is brushed 
   function updateChart2(brushEvent) {
-    
-    //TODO: Find coordinates of brushed region 
 
-    //TODO: Start an empty set that you can store names of selected species in 
-  
-    //TODO: Give bold outline to all points within the brush region in Scatterplot2 & collected names of brushed species
+    //Find coordinates of brushed region 
+    let coordinates = d3.brushSelection(this);
 
-    //TODO: Give bold outline to all points in Scatterplot1 corresponding to points within the brush region in Scatterplot2
+    //Start an empty set that you can store names of selected species in 
+    let species_set = new Set();
 
-    //TODO: Give bold outline to all bars in bar chart with corresponding to species selected by Scatterplot2 brush
+    //Give bold outline to all points within the brush region in Scatterplot2 & collected names of brushed species
+    myCircles2.classed("brushed", function (d) {
 
+      selected = brushed(coordinates, x2(d[xKey2]), y2(d[yKey2]));
+
+      if (selected) {
+        species_set.add(d[xKey3]);
+      }
+      return selected;
+    })
+
+    //Give bold outline to all points in Scatterplot1 corresponding to points within the brush region in Scatterplot2
+    myCircles1.classed("brushed", function (d) {
+      return brushed(coordinates, x2(d[xKey2]), y2(d[yKey2]));
+    })
+
+    //Give bold outline to all bars in bar chart with corresponding to species selected by Scatterplot2 brush
+    myBar.classed("brushed", function (d) {
+      return species_set.has(d[xKey3]);
+    })
+      
   }
 
     //Finds dots within the brushed region
-    function isBrushed(brush_coords, cx, cy) {
+    function brushed(brush_coords, cx, cy) {
       if (brush_coords === null) return;
 
       var x0 = brush_coords[0][0],
         x1 = brush_coords[1][0],
         y0 = brush_coords[0][1],
         y1 = brush_coords[1][1];
-      return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1; // This return TRUE or FALSE depending on if the points is in the selected area
+      return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1; // 
     }
 });

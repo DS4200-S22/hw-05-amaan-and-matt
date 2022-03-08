@@ -2,3 +2,15 @@
 body {
   font-family: Arial;
 }
+
+.no-brush {
+  stroke: "transparent";
+
+}
+
+.brush {
+  stroke: black;
+  stroke-width: 3.5px;
+  opacity: 1 !important;
+
+}
