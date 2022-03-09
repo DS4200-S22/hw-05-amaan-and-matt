@@ -287,12 +287,6 @@ d3.csv("data/iris.csv").then((data) => {
   // Call when Scatterplot1 is brushed 
   function updateChart1(brushEvent) {
       
-      //TODO: Find coordinates of brushed region 
-  
-      //TODO: Give bold outline to all points within the brush region in Scatterplot1
-
-      //TODO: Give bold outline to all points in Scatterplot2 corresponding to points within the brush region in Scatterplot1
-      
     //TODO: Find coorindates of brushed region
     let coordinates = d3.brushSelection(this);
 
@@ -336,7 +330,7 @@ d3.csv("data/iris.csv").then((data) => {
     })
 
     //Give bold outline to all bars in bar chart with corresponding to species selected by Scatterplot2 brush
-    myBar.classed("brushed", function (d) {
+    myBars.classed("brushed", function (d) {
       return species_set.has(d[xKey3]);
     })
       
