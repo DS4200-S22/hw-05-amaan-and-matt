@@ -292,13 +292,13 @@ d3.csv("data/iris.csv").then((data) => {
 
     // this gives all first scatterplots circles brushed class attributes 
     // gives black outline, opacity
-    myCircles1.classed("brushed", function (d) {
+    myCircles1.classed("brush", function (d) {
       return brushed(coordinates, x1(d[xKey1]), y1(d[yKey1]))
       
     })
 
     // outlines second scatterplot circles that are on same row as first scatterplot circles being brushed
-    myCircles2.classed("brushed", function (d) {
+    myCircles2.classed("brush", function (d) {
       return brushed(coordinates, x1(d[xKey1]), y1(d[yKey1]))
     })
     
@@ -314,7 +314,7 @@ d3.csv("data/iris.csv").then((data) => {
     let species_set = new Set();
 
     //Give bold outline to all points within the brush region in Scatterplot2 & collected names of brushed species
-    myCircles2.classed("brushed", function (d) {
+    myCircles2.classed("brush", function (d) {
 
       selected = brushed(coordinates, x2(d[xKey2]), y2(d[yKey2]));
 
@@ -325,12 +325,12 @@ d3.csv("data/iris.csv").then((data) => {
     })
 
     //Give bold outline to all points in Scatterplot1 corresponding to points within the brush region in Scatterplot2
-    myCircles1.classed("brushed", function (d) {
+    myCircles1.classed("brush", function (d) {
       return brushed(coordinates, x2(d[xKey2]), y2(d[yKey2]));
     })
 
     //Give bold outline to all bars in bar chart with corresponding to species selected by Scatterplot2 brush
-    myBars.classed("brushed", function (d) {
+    myBars.classed("brush", function (d) {
       return species_set.has(d[xKey3]);
     })
       
