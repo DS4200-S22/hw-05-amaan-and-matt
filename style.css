@@ -3,14 +3,9 @@ body {
 }
 
 
-.brushed {
+.brush {
   stroke: black;
   stroke-width: 3px;
   opacity: 1 !important;
-
-}
-
-.non-brushed {
-  stroke: "transparent";
 
 }
